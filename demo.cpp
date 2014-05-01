@@ -28,7 +28,7 @@ void gen_random_string(char *buffer, size_t len) {
 
 // Create and return an array of numstrings character strings
 char **make_random_string_array(size_t numstrings, size_t numchars) {
-    char **strings = (char**)malloc(numstrings*sizeof(char*));
+    char **strings = (char**)malloc((numstrings + 1)*sizeof(char*));
     for (int i = 0; i < numstrings; i++) {
         // The length of the string is randomly generated:
         size_t string_len = rand() % (numchars + 1);
@@ -37,14 +37,16 @@ char **make_random_string_array(size_t numstrings, size_t numchars) {
         // Use gen_random_string to generate the content:
         gen_random_string(strings[i], string_len);
     }
+    // Add NULL endmarker
+    strings[numstrings] = NULL;
     return strings;
 }
 
 // Append all the given character strings to a list, and merge sort the list.
 // Given the same input, appendAndSort will produce the same output as addSorted.
-List *appendAndSort(int numstrings, char **strings) {
+List *appendAndSort(char **strings) {
     List *list = createList();
-    for (int i = 0; i < numstrings; i++) {
+    for (int i = 0; strings[i] != NULL; i++) {
         appendTo(list, strings[i]);
     }
     mergeSort(list, strcmp_wrapper);
@@ -53,9 +55,9 @@ List *appendAndSort(int numstrings, char **strings) {
 
 // Add all the given character strings to a list in sorted order.
 // Given the same input, addSorted will produce the same output as appendAndSort.
-List *addSorted(int numstrings, char **strings) {
+List *addSorted(char **strings) {
     List *list = createList();
-    for (int i = 0; i < numstrings; i++) {
+    for (int i = 0; strings[i] != NULL; i++) {
         addInSortedOrder(list, strings[i], strcmp_wrapper);
     }
     return list;
@@ -63,13 +65,13 @@ List *addSorted(int numstrings, char **strings) {
 
 // Basic timing test rig: set up an array of words, add the words to a list using the given function,
 // and measure how long it takes to populate the list. 
-void time_it( List* (*populate_list)(int, char**), size_t ns, size_t sz, const char *description ) {
+void time_it( List* (*populate_list)(char**), size_t ns, size_t sz, const char *description ) {
     struct timeval stop, start;
     char **words = make_random_string_array(ns, sz);
     gettimeofday(&start, NULL);
-    List *list = populate_list(ns, words);
+    List *list = populate_list(words);
     gettimeofday(&stop, NULL);
-    printf("%s : %lu usecs (%lu seconds)\n", description, stop.tv_usec - start.tv_usec, stop.tv_sec - start.tv_sec);
+    printf("%s %d nodes: %lu usecs (%lu seconds)\n", description, list_size(list), stop.tv_usec - start.tv_usec, stop.tv_sec - start.tv_sec);
     deleteList(&list, cleanup);
     free(words);
 }
@@ -80,7 +82,6 @@ int main(int argc, char **argv) {
     size_t sz = 16;
 
     for (int i = 0; ns[i] != -1; i++) {
-        printf("Testing %d words of %d characters\n", ns[i], sz);
         time_it(appendAndSort, ns[i], sz, "Append followed by mergesort");
         time_it(addSorted, ns[i], sz, "Adding in sorted order");
         printf("\n");
