@@ -22,12 +22,6 @@ Written in C using some C++ features. Built and tested on ubuntu 12.04. (GNU g++
   
 Example output
 --------------
-
-For lists under 1024 words, there is no appreciable difference between the two methods of producing a sorted list, 
-but for larger lists the method of appending all the words followed by merge sorting the list becomes increasingly
-attractive, showing the difference in the underlying algorithms (n*log(n) for mergesort, n-squared for adding in 
-sorted order, where n is the number of nodes in the list)
-
 ```
 $ ./srtd_list_demo
 Append followed by mergesort 16 nodes: 25 usecs (0 seconds)
@@ -58,6 +52,10 @@ Append followed by mergesort 65536 nodes: 28556 usecs (0 seconds)
 Adding in sorted order 65536 nodes: 18446744073709470991 usecs (21 seconds)
 
 ```
+For lists under 1024 words, there is no appreciable difference between the two methods of producing a sorted list, 
+but for larger lists the method of appending all the words followed by merge sorting the list becomes increasingly
+attractive, showing the difference in the underlying algorithms (n*log(n) for mergesort, n-squared for adding in 
+sorted order, where n is the number of nodes in the list)
 
 Environment notes:
 
