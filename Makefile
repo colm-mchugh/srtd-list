@@ -1,4 +1,4 @@
-target := ms_list
+target := srtd_list_demo
 C_SRCS := list.cpp demo.cpp
 C_OBJS := ${C_SRCS:.cpp=.o}
 C_FLAGS := -ggdb

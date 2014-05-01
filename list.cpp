@@ -156,9 +156,9 @@ void addInSortedOrder(List* list, void *data, compare comp_op) {
     list->num_nodes++;
 }
 
-// merge sort the given List
 ListNode *mergeSortNodes(ListNode*, compare);
 
+// merge sort the given List
 void mergeSort(List *list, compare comp_op) {
     ListNode *sorted_nodes = mergeSortNodes(list->head, comp_op);
     list-> head = sorted_nodes;
@@ -186,16 +186,17 @@ ListNode * mergeSortNodes(ListNode *list, compare comp_op) {
     list = mergeSortNodes(list, comp_op);
     right = mergeSortNodes(right, comp_op);
 
+    // list and right are two sorted lists; merge them into one
     while (list || right) {
-        if (!right) {
+        if (!right) { // no more right list, take rest of list
             next = list;
             list = list->next;
         } else {
-            if (!list) {
+            if (!list) { // no more list, take rest of right
                 next = right;
                 right = right->next;
-            } else {
-                if (comp_op(list->data, right->data) < 0) {
+            } else { // take smaller of list or right
+                if (comp_op(list->data, right->data) <= 0) {
                     next = list;
                     list = list->next;
                 } else {
@@ -214,6 +215,3 @@ ListNode * mergeSortNodes(ListNode *list, compare comp_op) {
     }
     return result;
 }
-
-
-
