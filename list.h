@@ -50,6 +50,9 @@ void prependTo(List*, void*);
 // Add the given data to the list in sorted order 
 void addInSortedOrder(List*, void*, compare);
 
+// Is the list sorted?
+bool isSorted(List*, compare);
+
 // Mergesort the given list
 void mergeSort(List*, compare);
 #endif

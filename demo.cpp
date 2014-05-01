@@ -72,6 +72,9 @@ void time_it( List* (*populate_list)(char**), size_t ns, size_t sz, const char *
     List *list = populate_list(words);
     gettimeofday(&stop, NULL);
     printf("%s %d nodes: %lu usecs (%lu seconds)\n", description, list_size(list), stop.tv_usec - start.tv_usec, stop.tv_sec - start.tv_sec);
+    if (!isSorted(list, strcmp_wrapper)) {
+        printf("WARNING: list is not sorted\n");
+    }
     deleteList(&list, cleanup);
     free(words);
 }

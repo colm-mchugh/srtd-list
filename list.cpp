@@ -135,6 +135,8 @@ void *unlinkElement(List *list, ListNode *element) {
 	return data;
 }
 		
+// Add the given data just before the first node with data greater than it,
+// according to the given compare function
 void addInSortedOrder(List* list, void *data, compare comp_op) {
     if ((list->head == NULL) || (comp_op(data, list->head->data) < 0)) {
         prependTo(list, data);
@@ -154,6 +156,18 @@ void addInSortedOrder(List* list, void *data, compare comp_op) {
     new_node->prev->next = new_node;
     tmp->prev = new_node;
     list->num_nodes++;
+}
+
+bool isSorted(List *list, compare comp_op) {
+    bool result = true;
+    if (list_size(list) > 1) {
+        for(ListNode *node = list->head; node->next != NULL && result; node = node->next) {
+            if (comp_op(node->data, node->next->data) > 0) {
+                result = false;
+            }
+        }
+    }
+    return result;
 }
 
 ListNode *mergeSortNodes(ListNode*, compare);
