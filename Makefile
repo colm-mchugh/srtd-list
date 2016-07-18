@@ -1,5 +1,5 @@
-target := srtd_list_demo
-C_SRCS := list.cpp demo.cpp
+target := inversions
+C_SRCS := list.cpp main.cpp
 C_OBJS := ${C_SRCS:.cpp=.o}
 C_FLAGS := -ggdb
 CPP := g++

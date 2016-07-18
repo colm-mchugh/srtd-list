@@ -1,5 +1,7 @@
 #include "list.h"
 #include <stdlib.h>
+#include <iostream>
+using namespace std;
 
 List *createList() {
 	List *new_list = (List*)malloc(sizeof(List));
@@ -174,10 +176,17 @@ ListNode *mergeSortNodes(ListNode*, compare);
 
 // merge sort the given List
 void mergeSort(List *list, compare comp_op) {
+    num_inversions = 0;
     ListNode *sorted_nodes = mergeSortNodes(list->head, comp_op);
     list-> head = sorted_nodes;
     list->tail = NULL;
 }
+
+unsigned long numInversions() {
+    return num_inversions;
+}
+
+unsigned long listSize(ListNode *l); 
 
 ListNode * mergeSortNodes(ListNode *list, compare comp_op) {
     if (list == NULL || list->next == NULL) {
@@ -215,6 +224,7 @@ ListNode * mergeSortNodes(ListNode *list, compare comp_op) {
                     list = list->next;
                 } else {
                     next = right;
+		    num_inversions += listSize(list);
                     right = right->next;
                 }
            }
@@ -228,4 +238,13 @@ ListNode * mergeSortNodes(ListNode *list, compare comp_op) {
         tail = next;
     }
     return result;
+}
+
+unsigned long listSize(ListNode *l) {
+    unsigned long rv = 0;
+    while (l) {
+        rv++;
+        l = l->next;
+    }
+    return rv;
 }

@@ -15,6 +15,8 @@ typedef struct _list {
 	int num_nodes;
 } List;
 
+static unsigned long num_inversions = 0;
+
 #define list_size(l) (l->num_nodes)
 
 typedef bool (*equals)(void*, void*);
@@ -55,4 +57,7 @@ bool isSorted(List*, compare);
 
 // Mergesort the given list
 void mergeSort(List*, compare);
+
+// Return number of inversions
+unsigned long numInversions();
 #endif
